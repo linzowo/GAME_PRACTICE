@@ -8,7 +8,7 @@ class Diamonds(object):
         self.screen = screen
         self.al_settings = al_settings
         self.screen_rect = screen.get_rect()
-        self.rect = pygame.Rect(0,0,100,50)
+        self.rect = pygame.Rect(0,0,50,100)
         self.rect.centery = self.screen_rect.centery
         self.rect.right = self.screen_rect.right
 

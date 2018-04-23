@@ -10,3 +10,6 @@ class Settings(object):
         #靶子变向标记
         self.dia_speed = 1
         self.change_direction = -1
+
+        #狗命
+        #self.dog_life = 3

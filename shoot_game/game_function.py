@@ -2,6 +2,7 @@
 
 import pygame
 import sys
+from time import sleep
 
 from bullet import Bullet
 
@@ -37,19 +38,27 @@ def fire_bullet(bullets,screen,ship):
     bullets.add(bullet)
 
 
-def update_bullet(diamonds,bullets):
+def update_bullet(diamonds,bullets,stats):
     """管理子弹的函数"""
     bullets.update()
     for bullet in bullets.copy():
         if bullet.rect.right >= bullet.screen_rect.right:
             bullets.remove(bullet)
-    check_colli(diamonds,bullets)
+            stats.dog_life -= 1
+    check_colli(diamonds,bullets,stats)
 
 
-def check_colli(diamonds,bullets):
+def check_colli(diamonds,bullets,stats):
     """检查子弹是否集中靶子"""
+    if stats.dog_life <= 0:
+        stats.game_active = False
     if pygame.sprite.spritecollideany(diamonds,bullets):
-        print "hit"
+        hit_dia(bullets)
+
+def hit_dia(bullets):
+    """击中靶子后"""
+    bullets.empty()  #清空子弹
+    sleep(0.5) #暂停
 
 def update_screen(screen,ship,diamonds,al_settings,bullets):
     screen.fill((255,255,255))
@@ -60,4 +69,3 @@ def update_screen(screen,ship,diamonds,al_settings,bullets):
     change_dia_direction(diamonds,al_settings)
     diamonds.draw_dia()
     pygame.display.flip()
-    print len(bullets)
