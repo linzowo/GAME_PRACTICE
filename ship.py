@@ -1,11 +1,12 @@
 #_*_ coding: utf_8 _*_
 import pygame
-
-class Ship(object):
+from pygame.sprite import Sprite
+class Ship(Sprite):
     """关于飞船的类"""
     
     def __init__(self,screen,ai_settings):
         """初始化飞船位置"""
+        super(Ship,self).__init__()
         self.screen = screen
         self.ai_settings = ai_settings
         #加载飞船图像并获取其外接矩形

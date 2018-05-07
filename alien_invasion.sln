@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "alien_invasion", "alien_invasion\alien_invasion.pyproj", "{B4AC3601-261D-4D48-A16B-370ED070EDB4}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "alien_invasion", "alien_invasion.pyproj", "{B4AC3601-261D-4D48-A16B-370ED070EDB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,6 +18,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {0065E312-31CE-49D1-B016-A8996B0BB547}
+		SolutionGuid = {8D65929A-14E1-43BF-9E67-CF313FF4594E}
 	EndGlobalSection
 EndGlobal
