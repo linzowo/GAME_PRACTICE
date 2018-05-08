@@ -27,6 +27,7 @@ def run_game():
     #创建一艘飞船
     ship = Ship(screen,ai_settings)
     bullets = Group()
+    alien_bullets = Group()
 
     #创建外星人
     aliens = Group()
@@ -36,14 +37,15 @@ def run_game():
 
     #游戏主循环开始
     while True:
-        gf.check_events(ai_settings,screen,ship,bullets,stats,play_button,aliens,sb)
+        gf.check_events(ai_settings,screen,ship,bullets,stats,play_button,aliens,
+                        sb,alien_bullets)
 
         if stats.game_active:
             ship.update()
-            gf.update_bullets(aliens,bullets,ai_settings,screen,ship,stats,sb)
+            gf.update_bullets(aliens,bullets,alien_bullets,ai_settings,screen,ship,stats,sb)
             gf.update_aliens(ai_settings,aliens,ship,screen,stats,bullets,sb)
 
-        gf.update_screen(ai_settings,screen,ship,aliens,bullets,stats,play_button,sb)
+        gf.update_screen(ai_settings,screen,ship,aliens,bullets,stats,play_button,sb,alien_bullets)
 
 
 

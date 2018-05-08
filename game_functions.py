@@ -4,19 +4,20 @@ import pygame
 import json
 
 from bullet import Bullet
+from alien_bullet import AlienBullet
 from alien import Alien
 from time import sleep
 
 #响应用户按键的函数
-def check_events(ai_settings,screen,ship,bullets,stats,play_button,aliens,sb):
+def check_events(ai_settings,screen,ship,bullets,stats,play_button,aliens,sb,alien_bullets):
     """响应鼠标和键盘事件"""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             #如果用户点了退出
             sys_out(stats)
         elif event.type == pygame.KEYDOWN:
-            check_keydown_events(event,ai_settings,screen,ship,bullets,stats,aliens,sb)
-
+            check_keydown_events(event,ai_settings,screen,ship,bullets,
+                                 stats,aliens,sb,alien_bullets)
         elif event.type == pygame.KEYUP:
             check_keyup_events(ship,event)
         elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -24,7 +25,7 @@ def check_events(ai_settings,screen,ship,bullets,stats,play_button,aliens,sb):
             check_play_button(ai_settings,screen,ship,stats,play_button,mouse_x,mouse_y,
                       aliens,bullets,sb)
 
-def check_keydown_events(event,ai_settings,screen,ship,bullets,stats,aliens,sb):
+def check_keydown_events(event,ai_settings,screen,ship,bullets,stats,aliens,sb,alien_bullets):
     """响应KEYDOWN事件"""
     if event.key == pygame.K_q:
         sys_out(stats)
@@ -39,6 +40,7 @@ def check_keydown_events(event,ai_settings,screen,ship,bullets,stats,aliens,sb):
         ship.move_down = True
     if event.key == pygame.K_SPACE:
         fire_bullet(ai_settings,screen,ship,bullets)
+        alien_shoot(alien_bullets,ai_settings,screen,aliens)
     if (event.key == pygame.K_p) and not stats.game_active:
         start_game(ai_settings,screen,stats,aliens,bullets,ship,sb)
         
@@ -84,13 +86,17 @@ def start_game(ai_settings,screen,stats,aliens,bullets,ship,sb):
 
 #关于子弹的函数
 
-def update_bullets(aliens,bullets,ai_settings,screen,ship,stats,sb):
+def update_bullets(aliens,bullets,alien_bullets,ai_settings,screen,ship,stats,sb):
     """管理子弹数量的函数"""
     bullets.update()
+    alien_bullets.update()
     #删除已经飞出屏幕的子弹
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
+    for bullet in alien_bullets.copy():
+        if bullet.rect.top >= 1200:
+            alien_bullets.remove(bullet)
     check_bullet_alien_collisions(ai_settings,screen,aliens,ship,bullets,stats,sb)
 
 def fire_bullet(ai_settings,screen,ship,bullets):
@@ -99,6 +105,15 @@ def fire_bullet(ai_settings,screen,ship,bullets):
     if len(bullets) < ai_settings.bullets_allowed:
         new_bullets = Bullet(ai_settings,screen,ship)
         bullets.add(new_bullets)
+
+def alien_shoot(alien_bullets,ai_settings,screen,aliens):
+    """外星人射击"""
+    i = 0
+    for alien in aliens:
+        i += 1
+        if i == 2 or i == 6:
+            new_bullet = AlienBullet(ai_settings,screen,alien)
+            alien_bullets.add(new_bullet)
 
 def check_bullet_alien_collisions(ai_settings,screen,aliens,ship,bullets,stats,sb):
     """检查子弹和外星人是否碰撞，如果碰撞就删除子弹和外星人"""
@@ -220,7 +235,7 @@ def sys_out(stats):
     sys.exit()
     
 
-def update_screen(ai_settings,screen,ship,aliens,bullets,stats,play_button,sb):
+def update_screen(ai_settings,screen,ship,aliens,bullets,stats,play_button,sb,alien_bullets):
     """更新屏幕上的图像，并显示新屏幕"""   
     #更改屏幕颜色
     screen.fill(ai_settings.bg_color)
@@ -230,6 +245,8 @@ def update_screen(ai_settings,screen,ship,aliens,bullets,stats,play_button,sb):
     aliens.draw(screen)
     #创建一系列子弹
     for bullet in bullets.sprites():
+        bullet.draw_bullet()
+    for bullet in alien_bullets.sprites():
         bullet.draw_bullet()
     sb.blitme()
     #如果游戏处于非活动状态就创建一个play按钮

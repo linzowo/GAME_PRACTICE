@@ -23,6 +23,9 @@ class Alien(Sprite):
        #为了精确的存储外星人的位置
        self.rect.x = float(self.rect.x)
 
+       #外星人编号
+       self.number = 0
+
     def blitme(self):
         """在屏幕上创建外星人"""
         self.screen.blit(self.image,self.rect)
